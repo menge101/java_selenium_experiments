@@ -22,7 +22,7 @@ public class RsvpMainPageModel {
         pageElements.put("inviteeEditableName", By.cssSelector("input"));
         pageElements.put("inviteeSaveBtn", By.cssSelector("input + label + button"));
         pageElements.put("inviteeConfirm", By.cssSelector("label input"));
-        pageElements.put("inviteeEditBtn", By.xpath("*/button[1]"));
+        pageElements.put("inviteeEditBtn", By.xpath("./button[1]"));
         pageElements.put("inviteeRemoveBtn", By.cssSelector("button:last-child"));
     }
 
