@@ -13,37 +13,52 @@ import java.util.List;
 
 
 public class LaunchRsvp {
-    public static void main(String[] args) throws InterruptedException {
-        RsvpMainPageModel pageModel = new RsvpMainPageModel();
-        WebDriver driver = new ChromeDriver();
-        driver.get("http://port-80-ylcuoefrob.treehouse-app.com");
-        WebElement form = pageModel.find("invitationForm", driver);
-        WebElement textField = pageModel.findChildElement("invite_text_field", form);
-        WebElement submitBtn = pageModel.findChildElement("submit", form);
-        // textField.click();
+    private RsvpMainPageModel model;
+    private WebDriver driver;
+
+    public LaunchRsvp(String url) {
+        model = new RsvpMainPageModel();
+        driver = new ChromeDriver();
+        driver.get(url);
+    }
+
+    public void addInvitee(String name) {
+        WebElement form = model.find("invitationForm", driver);
+        WebElement textField = model.findChildElement("invite_text_field", form);
+        WebElement submitBtn = model.findChildElement("submit", form);
         textField.sendKeys("Bob");
         submitBtn.click();
-        textField.sendKeys("Steve");
-        submitBtn.click();
-        textField.sendKeys("Carol");
-        submitBtn.click();
-        List<WebElement> elementList = pageModel.findElements("inviteeList", driver);
-        // Edit Steve to Sarah
+    }
+
+    public void editName(String original, String desired) {
+        List<WebElement> elementList = model.findElements("inviteeList", driver);
         WebElement current = null;
         for (int i = 0; i < elementList.size(); i++) {
             current = elementList.get(i);
-            WebElement nameElement = pageModel.findChildElement("inviteeName", current);
+            WebElement nameElement = model.findChildElement("inviteeName", current);
             String name = nameElement.getText();
-            if (name.equals("Steve")) {
+            if (name.equals(original)) {
                 break;
             }
         }
-        WebElement editBtn = pageModel.findChildElement("inviteeEditBtn", current);
+        WebElement editBtn = model.findChildElement("inviteeEditBtn", current);
         editBtn.click();
-        Thread.sleep(2000);
-        WebElement editName = pageModel.findChildElement("inviteeEditableName", current);
-        editName.sendKeys("Sarah");
-        WebElement saveBtn = pageModel.findChildElement("inviteeSaveBtn", current);
+        WebElement editName = model.findChildElement("inviteeEditableName", current);
+        editName.clear();
+        editName.sendKeys(desired);
+        WebElement saveBtn = model.findChildElement("inviteeSaveBtn", current);
         saveBtn.click();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        LaunchRsvp rsvp = new LaunchRsvp("http://port-80-ylcuoefrob.treehouse-app.com");
+
+        // Invite some people
+        rsvp.addInvitee("Bob");
+        rsvp.addInvitee("Steve");
+        rsvp.addInvitee("Carol");
+
+        // Edit Steve to Sarah
+        rsvp.editName("Steve", "Sarah");
     }
 }
