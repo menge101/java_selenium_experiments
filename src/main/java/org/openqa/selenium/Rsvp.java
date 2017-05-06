@@ -1,7 +1,6 @@
 package org.openqa.selenium;
 
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.List;
 
 
@@ -9,9 +8,9 @@ public class Rsvp {
     private RsvpMainPageModel model;
     private WebDriver driver;
 
-    public Rsvp(String url) {
+    public Rsvp(String url, WebDriver webDriver) {
         model = new RsvpMainPageModel();
-        driver = new ChromeDriver();
+        driver = webDriver;
         driver.get(url);
     }
 
@@ -40,6 +39,30 @@ public class Rsvp {
         removeBtn.click();
     }
 
+    public void toggleHideNonResponders() {
+        WebElement checkBox = model.find("hideNonResponders", driver);
+        checkBox.click();
+    }
+
+    public void setNonResponders() {
+        WebElement checkbox = model.find("hideNonResponders", driver);
+        if (!checkbox.isSelected()) {
+            toggleHideNonResponders();
+        }
+    }
+
+    public void unSetNonResponders() {
+        WebElement checkbox = model.find("hideNonResponders", driver);
+        if (checkbox.isSelected()) {
+            toggleHideNonResponders();
+        }
+    }
+
+    public void printNonResponderState() {
+        WebElement checkbox = model.find("hideNonResponders", driver);
+        System.out.println(Boolean.toString(checkbox.isSelected()));
+    }
+
     private WebElement findParentByName(String name) {
         List<WebElement> elementList = model.findElements("inviteeList", driver);
         WebElement current = null;
@@ -55,7 +78,7 @@ public class Rsvp {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Rsvp rsvp = new Rsvp("http://port-80-ylcuoefrob.treehouse-app.com");
+        Rsvp rsvp = new Rsvp("http://port-80-ylcuoefrob.treehouse-app.com", new ChromeDriver());
 
         // Invite some people
         rsvp.addInvitee("Bob");
@@ -67,5 +90,14 @@ public class Rsvp {
 
         // Remove Bob
         rsvp.removeInvitee("Bob");
+
+        // set show responders
+        rsvp.printNonResponderState();
+        rsvp.setNonResponders();
+        rsvp.printNonResponderState();
+        rsvp.unSetNonResponders();
+        rsvp.printNonResponderState();
+        rsvp.toggleHideNonResponders();
+        rsvp.printNonResponderState();
     }
 }
