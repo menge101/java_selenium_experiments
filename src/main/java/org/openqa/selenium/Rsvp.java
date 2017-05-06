@@ -5,70 +5,73 @@ import java.util.List;
 
 
 public class Rsvp {
-    private RsvpMainPageModel model;
+    private RsvpMainPageModel mainModel;
+    private RsvpInviteePageModel inviteeModel;
     private WebDriver driver;
 
     public Rsvp(String url, WebDriver webDriver) {
-        model = new RsvpMainPageModel();
+        mainModel = new RsvpMainPageModel();
+        inviteeModel = new RsvpInviteePageModel();
         driver = webDriver;
         driver.get(url);
     }
 
     public void addInvitee(String name) {
-        WebElement form = model.find("invitationForm", driver);
-        WebElement textField = model.findChildElement("invite_text_field", form);
-        WebElement submitBtn = model.findChildElement("submit", form);
+        WebElement form = mainModel.find("invitationForm", driver);
+        WebElement textField = mainModel.findChildElement("invite_text_field", form);
+        WebElement submitBtn = mainModel.findChildElement("submit", form);
         textField.sendKeys(name);
         submitBtn.click();
     }
 
     public void editName(String original, String desired) {
         WebElement current = findParentByName(original);
-        WebElement editBtn = model.findChildElement("inviteeEditBtn", current);
+        WebElement editBtn = mainModel.findChildElement("inviteeEditBtn", current);
         editBtn.click();
-        WebElement editName = model.findChildElement("inviteeEditableName", current);
+        WebElement editName = mainModel.findChildElement("inviteeEditableName", current);
         editName.clear();
         editName.sendKeys(desired);
-        WebElement saveBtn = model.findChildElement("inviteeSaveBtn", current);
+        WebElement saveBtn = mainModel.findChildElement("inviteeSaveBtn", current);
         saveBtn.click();
     }
 
     public void removeInvitee(String name) {
         WebElement current = findParentByName(name);
-        WebElement removeBtn = model.findChildElement("inviteeRemoveBtn", current);
+        WebElement removeBtn = mainModel.findChildElement("inviteeRemoveBtn", current);
         removeBtn.click();
     }
 
     public void toggleHideNonResponders() {
-        WebElement checkBox = model.find("hideNonResponders", driver);
-        checkBox.click();
+        WebElement checkbox = mainModel.find("hideNonResponders", driver);
+        checkbox.click();
     }
 
     public void setNonResponders() {
-        WebElement checkbox = model.find("hideNonResponders", driver);
+        WebElement checkbox = mainModel.find("hideNonResponders", driver);
         if (!checkbox.isSelected()) {
-            toggleHideNonResponders();
+            checkbox.click();
         }
     }
 
     public void unSetNonResponders() {
-        WebElement checkbox = model.find("hideNonResponders", driver);
+        WebElement checkbox = mainModel.find("hideNonResponders", driver);
+        System.out.println("Checked attribute: " + checkbox.getAttribute("checked"));
         if (checkbox.isSelected()) {
-            toggleHideNonResponders();
+            checkbox.click();
         }
     }
 
     public void printNonResponderState() {
-        WebElement checkbox = model.find("hideNonResponders", driver);
+        WebElement checkbox = mainModel.find("hideNonResponders", driver);
         System.out.println(Boolean.toString(checkbox.isSelected()));
     }
 
     private WebElement findParentByName(String name) {
-        List<WebElement> elementList = model.findElements("inviteeList", driver);
+        List<WebElement> elementList = mainModel.findElements("inviteeList", driver);
         WebElement current = null;
         for (int i = 0; i < elementList.size(); i++) {
             current = elementList.get(i);
-            WebElement nameElement = model.findChildElement("inviteeName", current);
+            WebElement nameElement = mainModel.findChildElement("inviteeName", current);
             String elementName = nameElement.getText();
             if (elementName.equals(name)) {
                 break;
