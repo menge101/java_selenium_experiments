@@ -19,11 +19,15 @@ public class RsvpMainPageModel {
         pageElements.put("submit", By.name("submit"));
         pageElements.put("inviteeList", By.cssSelector("#invitedList li"));
         pageElements.put("inviteeName", By.cssSelector("span"));
+        pageElements.put("inviteeNames", By.cssSelector("ul#invitedList li span"));
         pageElements.put("inviteeEditableName", By.cssSelector("input"));
         pageElements.put("inviteeSaveBtn", By.cssSelector("input + label + button"));
         pageElements.put("inviteeConfirm", By.cssSelector("label input"));
+        pageElements.put("inviteeConfirmBtns", By.cssSelector("ul#invitedList li label input"));
         pageElements.put("inviteeEditBtn", By.xpath("./button[1]"));
         pageElements.put("inviteeRemoveBtn", By.cssSelector("button:last-child"));
+        pageElements.put("inviteeRemoveBtns", By.cssSelector("ul#invitedList li button:last-child"));
+        pageElements.put("hideNonResponders", By.cssSelector("div.main div input"));
     }
 
     public WebElement find(String elementName, WebDriver driver) {
