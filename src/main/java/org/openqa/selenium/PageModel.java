@@ -1,5 +1,6 @@
 package org.openqa.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -17,19 +18,28 @@ public abstract class PageModel {
         elements.put(name, matcher);
     }
 
+    public By getElement(String name) {
+        By value = elements.get(name);
+        if (value == null) {
+            String msg = name + " not found.";
+            System.err.println(msg);
+        }
+        return value;
+    }
+
     public WebElement find(String elementName, WebDriver driver) {
-        return driver.findElement(elements.get(elementName));
+        return driver.findElement(getElement(elementName));
     }
 
     public List<WebElement> findElements(String elementName, WebDriver driver) {
-        return driver.findElements(elements.get(elementName));
+        return driver.findElements(getElement(elementName));
     }
 
     public WebElement findChildElement(String elementName, WebElement parent) {
-        return parent.findElement(elements.get(elementName));
+        return parent.findElement(getElement(elementName));
     }
 
     public List<WebElement> findChildElements(String elementName, WebElement parent) {
-        return parent.findElements(elements.get(elementName));
+        return parent.findElements(getElement(elementName));
     }
 }

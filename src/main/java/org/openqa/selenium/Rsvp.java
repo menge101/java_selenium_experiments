@@ -26,18 +26,18 @@ public class Rsvp {
 
     public void editName(String original, String desired) {
         WebElement current = findParentByName(original);
-        WebElement editBtn = mainModel.findChildElement("inviteeEditBtn", current);
+        WebElement editBtn = inviteeModel.findChildElement("edit", current);
         editBtn.click();
-        WebElement editName = mainModel.findChildElement("inviteeEditableName", current);
+        WebElement editName = inviteeModel.findChildElement("editableName", current);
         editName.clear();
         editName.sendKeys(desired);
-        WebElement saveBtn = mainModel.findChildElement("inviteeSaveBtn", current);
+        WebElement saveBtn = inviteeModel.findChildElement("save", current);
         saveBtn.click();
     }
 
     public void removeInvitee(String name) {
         WebElement current = findParentByName(name);
-        WebElement removeBtn = mainModel.findChildElement("inviteeRemoveBtn", current);
+        WebElement removeBtn = inviteeModel.findChildElement("remove", current);
         removeBtn.click();
     }
 
@@ -71,7 +71,7 @@ public class Rsvp {
         WebElement current = null;
         for (int i = 0; i < elementList.size(); i++) {
             current = elementList.get(i);
-            WebElement nameElement = mainModel.findChildElement("inviteeName", current);
+            WebElement nameElement = inviteeModel.findChildElement("name", current);
             String elementName = nameElement.getText();
             if (elementName.equals(name)) {
                 break;
